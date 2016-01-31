@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tanloc.studentmng.model.TestModel;
 import com.tanloc.studentmng.model.User;
 import com.tanloc.studentmng.service.UserSevice;
 
@@ -26,8 +26,8 @@ public class UserController {
 		return userSevice.getUserById(id);
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public @ResponseBody TestModel abc() {
-		return new TestModel(10, "Vo Tan Loc");
+	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
+	public @ResponseBody boolean checkLogin(@RequestBody User user) {
+		return userSevice.isExist(user);
 	}
 }

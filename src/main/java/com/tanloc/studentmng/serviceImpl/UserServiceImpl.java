@@ -39,4 +39,10 @@ public class UserServiceImpl implements UserSevice {
 		// TODO Auto-generated method stub
 		return userDAO.getUserById(id);
 	}
+
+	@Override
+	public boolean isExist(User user) {
+		// TODO Auto-generated method stub
+		return userDAO.isExist(user);
+	}
 }
