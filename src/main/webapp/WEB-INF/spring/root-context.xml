@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
+	<context:component-scan base-package="com.tanloc.studentmng"></context:component-scan>
+	<mvc:default-servlet-handler />
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean name="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="url"
@@ -20,7 +27,7 @@
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="packagesToScan">
 			<array>
-				<value>com.tanloc.studentmng.controller.model</value>
+				<value>com.tanloc.studentmng.model</value>
 			</array>
 		</property>
 		<property name="hibernateProperties">
@@ -39,5 +46,4 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	<mvc:annotation-driven />
-	<mvc:default-servlet-handler />
 </beans>

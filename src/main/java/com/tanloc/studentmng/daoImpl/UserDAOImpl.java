@@ -19,13 +19,11 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void addUser(User user) {
-		// TODO Auto-generated method stub
 		getCurrentSession().saveOrUpdate(user);
 	}
 
 	@Override
 	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		User user = (User) session.get(User.class, id);
 		session.delete(user);
@@ -34,14 +32,12 @@ public class UserDAOImpl implements UserDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUserList() {
-		// TODO Auto-generated method stub
 		List<User> list = getCurrentSession().createCriteria(User.class).list();
 		return list;
 	}
 
 	@Override
 	public User getUserById(int id) {
-		// TODO Auto-generated method stub
 		User user = (User) getCurrentSession().get(User.class, id);
 		return user;
 	}
