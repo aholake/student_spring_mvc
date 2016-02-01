@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <title>Home</title>
@@ -22,6 +22,10 @@
 	src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript"
 	src="/studentmng/resources/js/materialize.min.js"></script>
+
+<!-- Custom Script -->
+<script type="text/javascript" src="/studentmng/resources/js/main.js"></script>
+</head>
 <body>
 	<div class="header">
 		<span>STUDENT MANAGER</span>
@@ -29,16 +33,19 @@
 	<div class="row">
 		<div class="col m6 offset-m3">
 			<div class="card grey darken-3">
-				<form action="" method="post">
+				<form:form modelAttribute="userForm"
+					action="/studentmng/user/checkLogin" method="post">
 					<div class="card-content white-text">
 						<span class="card-title">Login</span>
 						<div class="input-field">
-							<input id="userName" type="text" class="validate"
-								required="required"> <label>User name:</label>
+							<form:input path="userName" type="text" cssClass="validate"
+								required="required" />
+							<label>User name:</label>
 						</div>
 						<div class="input-field">
-							<input id="password" type="password" class="validate"
-								required="required"> <label>Password:</label>
+							<form:input path="password" type="password" cssClass="validate"
+								required="required" />
+							<label>Password:</label>
 						</div>
 						<div class="input-field">
 							<input type="checkbox" id="remember" /> <label for="remember">Keep
@@ -54,14 +61,25 @@
 								<button type="reset"
 									class="btn waves-effect waves-light grey lighten-1">Reset</button>
 							</div>
-							<div class="col m5 offset-s1">
-								<span class="red-text">Wrong password!</span>
-							</div>
+							<c:if test="${(not empty status)&&(status.error)}">
+								<div class="col m5 offset-s1">
+									<span class="red-text">${status.message }</span>
+								</div>
+							</c:if>
 						</div>
 					</div>
-				</form>
+				</form:form>
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$("#remember").change(function() {
+			if ($("#remember").is(":checked")) {
+				setCookie("remember", "true", 10);
+			} else {
+				setCookie("remember", "", 0);
+			}
+		});
+	</script>
 </body>
 </html>
