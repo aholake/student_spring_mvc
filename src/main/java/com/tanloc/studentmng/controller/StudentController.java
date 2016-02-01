@@ -23,7 +23,7 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@RequestMapping(value = "/getStudentList")
-	public @ResponseBody List<Student> getListStudent(@RequestParam("page") int page) {
+	public @ResponseBody List<Student> getListStudent() {
 		return this.studentService.getStudentList();
 	}
 

@@ -34,10 +34,6 @@ public class HomeController {
 	public ModelAndView manage() {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("manage-page");
-
-		int pageNum = (int) Math.ceil((double) studentService.getStudentList().size() / 5);
-		logger.info("Page Num: " + pageNum);
-		model.addObject("pageNum", pageNum);
 		return model;
 	}
 }

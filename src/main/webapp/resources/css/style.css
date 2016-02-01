@@ -13,4 +13,9 @@
 	font-size: 30px;
 	line-height: 100px;
 	padding-left: 20px;
+	margin-bottom: 8px;
+}
+
+.long-btn {
+	width: 100% !important;
 }

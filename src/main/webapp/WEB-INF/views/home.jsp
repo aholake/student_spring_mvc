@@ -6,25 +6,20 @@
 <head>
 <title>Login Page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <!-- Custom Style -->
 <link rel="stylesheet" href="/studentmng/resources/css/style.css">
-<!--Import Google Icon Font-->
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
-<!--Import materialize.css-->
-<link type="text/css" rel="stylesheet"
-	href="/studentmng/resources/css/materialize.min.css"
-	media="screen,projection" />
-
-<!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript"
-	src="/studentmng/resources/js/materialize.min.js"></script>
-
 <!-- Custom Script -->
 <script type="text/javascript" src="/studentmng/resources/js/main.js"></script>
 </head>
@@ -32,55 +27,46 @@
 	<div class="header">
 		<span>STUDENT MANAGER</span>
 	</div>
-	<div class="row">
-		<div class="col m6 offset-m3">
-			<div class="card grey darken-3">
-				<form:form modelAttribute="userForm"
-					action="/studentmng/user/checkLogin" method="post">
-					<div class="card-content white-text">
-						<span class="card-title">Đăng nhập</span>
-						<div class="input-field">
-							<form:input path="userName" type="text" cssClass="validate"
-								required="required" />
-							<label>Tên đăng nhập:</label>
-						</div>
-						<div class="input-field">
-							<form:input path="password" type="password" cssClass="validate"
-								required="required" />
-							<label>Mật khẩu</label>
-						</div>
-						<div class="input-field">
-							<input type="checkbox" id="remember" /> <label for="remember">Ghi nhớ đăng nhập</label>
-						</div>
-					</div>
-					<div class="card-action">
-						<div class="row">
-							<div class="col m4">
-								<button type="submit" class="btn waves-effect waves-light">Đăng nhập</button>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<form:form action="/studentmng/user/checkLogin" method="post"
+					modelAttribute="userForm">
+					<div class="panel panel-primary">
+						<div class="panel-heading">ĐĂNG NHẬP</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label>Tên đăng nhập:</label>
+								<form:input cssClass="form-control" path="userName" type="text"
+									required="required" />
 							</div>
-							<div class="col m4">
-								<button type="reset"
-									class="btn waves-effect waves-light grey darken-1">Làm sạch</button>
+							<div class="form-group">
+								<label>Mật khẩu</label>
+								<form:input path="password" type="password"
+									cssClass="form-control" required="required" />
 							</div>
-							<c:if test="${(not empty status)&&(status.error)}">
-								<div class="col m4 offset-s1">
-									<span class="red-text">${status.message }</span>
+							<div class="form-group">
+								<div class="checkbox">
+									<label><input type="checkbox" value="">Ghi nhớ
+										đăng nhập</label>
+								</div>
+							</div>
+							<c:if test="${!empty status && status.error }">
+								<div class="form-group">
+									<div class="text-danger">${status.message }</div>
 								</div>
 							</c:if>
+						</div>
+						<div class="panel-footer">
+							<div class="form-group-btn">
+								<button type="submit" class="btn long-btn btn-primary">Đăng
+									nhập</button>
+							</div>
 						</div>
 					</div>
 				</form:form>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		$("#remember").change(function() {
-			if ($("#remember").is(":checked")) {
-				setCookie("remember", "true", 10);
-			} else {
-				setCookie("remember", "", 0);
-			}
-		});
-	</script>
 </body>
 </html>
