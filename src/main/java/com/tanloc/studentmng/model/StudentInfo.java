@@ -1,5 +1,6 @@
 package com.tanloc.studentmng.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -12,14 +13,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "student_info", catalog = "student_spring_mvc")
-public class StudentInfo {
+public class StudentInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "info_id")
 	private int id;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")
 	private Student student;
@@ -71,5 +80,11 @@ public class StudentInfo {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentInfo [id=" + id + ", student=" + student + ", address=" + address + ", averageScore="
+				+ averageScore + ", dateOfBirth=" + dateOfBirth + "]";
 	}
 }

@@ -36,7 +36,7 @@ public class UserController {
 			@ModelAttribute("userForm") User user) {
 		ModelAndView model = new ModelAndView();
 		if (userSevice.isExist(user)) {
-			model.setViewName("manage-page");
+			model.setViewName("redirect:/manage");
 			request.getSession().setAttribute("user", user);
 		} else {
 			model.setViewName("home");

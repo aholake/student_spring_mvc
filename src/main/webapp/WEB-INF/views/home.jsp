@@ -1,9 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
-<title>Home</title>
-<meta charset="utf-8">
+<title>Login Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Custom Style -->
 <link rel="stylesheet" href="/studentmng/resources/css/style.css">
 <!--Import Google Icon Font-->
@@ -36,33 +38,32 @@
 				<form:form modelAttribute="userForm"
 					action="/studentmng/user/checkLogin" method="post">
 					<div class="card-content white-text">
-						<span class="card-title">Login</span>
+						<span class="card-title">Đăng nhập</span>
 						<div class="input-field">
 							<form:input path="userName" type="text" cssClass="validate"
 								required="required" />
-							<label>User name:</label>
+							<label>Tên đăng nhập:</label>
 						</div>
 						<div class="input-field">
 							<form:input path="password" type="password" cssClass="validate"
 								required="required" />
-							<label>Password:</label>
+							<label>Mật khẩu</label>
 						</div>
 						<div class="input-field">
-							<input type="checkbox" id="remember" /> <label for="remember">Keep
-								me logged in</label>
+							<input type="checkbox" id="remember" /> <label for="remember">Ghi nhớ đăng nhập</label>
 						</div>
 					</div>
 					<div class="card-action">
 						<div class="row">
-							<div class="col m3">
-								<button type="submit" class="btn waves-effect waves-light">Login</button>
+							<div class="col m4">
+								<button type="submit" class="btn waves-effect waves-light">Đăng nhập</button>
 							</div>
-							<div class="col m3">
+							<div class="col m4">
 								<button type="reset"
-									class="btn waves-effect waves-light grey lighten-1">Reset</button>
+									class="btn waves-effect waves-light grey darken-1">Làm sạch</button>
 							</div>
 							<c:if test="${(not empty status)&&(status.error)}">
-								<div class="col m5 offset-s1">
+								<div class="col m4 offset-s1">
 									<span class="red-text">${status.message }</span>
 								</div>
 							</c:if>
