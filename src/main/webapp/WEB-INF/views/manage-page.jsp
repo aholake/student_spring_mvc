@@ -61,7 +61,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="student in students">
+					<tr ng-repeat="student in filteredStudents">
 						<td>{{student.studentCode}}</td>
 						<td>{{student.studentName}}</td>
 						<td>{{student.studentInfo.averageScore}}</td>
@@ -70,17 +70,49 @@
 					</tr>
 				</tbody>
 			</table>
+			<uib-pagination total-items="totalItems" ng-model="currentPage"
+				items-per-page="itemsPerPage" max-size="maxSize" class="pagination"
+				boundary-links="true" rotate="false" num-pages="numPages">
+			</uib-pagination>
 		</div>
 	</div>
 	<script type="text/javascript">
-		var app = angular.module("myApp", []);
+		var app = angular.module("myApp", [ 'ui.bootstrap' ]);
 		var studentsURL = "/studentmng/student/getStudentList"
-		app.controller("myCtrl", function($http, $scope) {
-			$http.get(studentsURL).success(function(response) {
-				console.log(response);
-				$scope.students = response;
-			});
-		});
+		app
+				.controller(
+						"myCtrl",
+						function($http, $scope) {
+							$http
+									.get(studentsURL)
+									.success(
+											function(response) {
+												console.log(response);
+												$scope.students = response;
+												$scope.totalItems = response.length;
+
+												$scope.itemsPerPage = 5;
+												$scope.currentPage = 1;
+												$scope.maxSize = 5;
+												$scope.bigTotalItems = 200;
+												$scope.bigCurrentPage = 1;
+
+											
+
+												$scope
+														.$watch(
+																'currentPage + itemsPerPage',
+																function() {
+																	var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+																	var end = begin
+																			+ $scope.itemsPerPage;
+																	$scope.filteredStudents = $scope.students
+																			.slice(
+																					begin,
+																					end);
+																});
+											});
+						});
 	</script>
 </body>
 </html>
