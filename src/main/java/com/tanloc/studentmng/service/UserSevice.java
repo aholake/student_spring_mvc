@@ -12,4 +12,6 @@ public interface UserSevice {
 	public List<User> getUserList();
 
 	public User getUserById(int id);
+
+	public boolean isExist(User user);
 }
