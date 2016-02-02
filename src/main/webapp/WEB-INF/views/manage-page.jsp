@@ -26,11 +26,11 @@
 <!-- AngularJS -->
 <script
 	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-</head>
 
-<!-- Pagination -->
+<!-- Bootstrap UI -->
 <script type="text/javascript"
 	src="/studentmng/resources/js/ui-bootstrap-tpls-1.1.1.min.js"></script>
+</head>
 <body ng-controller="myCtrl">
 	<div class="header">
 		<span>Xin chào Administrator</span>
@@ -40,7 +40,7 @@
 			<form class="form-horizontal col-md-8 col-md-offset-2">
 				<div class="form-group">
 					<div class="col-md-8">
-						<input type="text" class="form-control" required>
+						<input type="text" class="form-control"  ng-model="searchKey" ng-change="filterStudent()">
 					</div>
 					<div class="col-md-4">
 						<button type="submit" class="btn btn-primary long-btn">Tìm
@@ -61,7 +61,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="student in filteredStudents">
+					<tr ng-repeat="student in studentCollection">
 						<td>{{student.studentCode}}</td>
 						<td>{{student.studentName}}</td>
 						<td>{{student.studentInfo.averageScore}}</td>
@@ -69,50 +69,50 @@
 						<td>{{student.studentInfo.address}}</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5" class="text-center">
+							<uib-pagination total-items="totalItems" ng-model="currentPage"
+								items-per-page="itemsPerPage" max-size="maxSize"
+								class="pagination" boundary-links="true" rotate="false"></uib-pagination>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
-			<uib-pagination total-items="totalItems" ng-model="currentPage"
-				items-per-page="itemsPerPage" max-size="maxSize" class="pagination"
-				boundary-links="true" rotate="false" num-pages="numPages">
-			</uib-pagination>
 		</div>
 	</div>
 	<script type="text/javascript">
-		var app = angular.module("myApp", [ 'ui.bootstrap' ]);
+		var app = angular.module("myApp", [ "ui.bootstrap"]);
 		var studentsURL = "/studentmng/student/getStudentList"
-		app
-				.controller(
-						"myCtrl",
-						function($http, $scope) {
-							$http
-									.get(studentsURL)
-									.success(
-											function(response) {
-												console.log(response);
-												$scope.students = response;
-												$scope.totalItems = response.length;
 
-												$scope.itemsPerPage = 5;
-												$scope.currentPage = 1;
-												$scope.maxSize = 5;
-												$scope.bigTotalItems = 200;
-												$scope.bigCurrentPage = 1;
+		app.controller("myCtrl", function($http, $scope, $filter) {
+			$http.get(studentsURL).success(function(response) {
+				console.log(response);
+				$scope.students = response;
 
-											
+				$scope.totalItems = response.length;
+				$scope.maxSize = 5;
+				$scope.currentPage = 1;
+				$scope.itemsPerPage = 5;
 
-												$scope
-														.$watch(
-																'currentPage + itemsPerPage',
-																function() {
-																	var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-																	var end = begin
-																			+ $scope.itemsPerPage;
-																	$scope.filteredStudents = $scope.students
-																			.slice(
-																					begin,
-																					end);
-																});
-											});
-						});
+				$scope.filterStudent = function() {
+					var temp = [];
+					temp = $filter('filter')($scope.students, $scope.searchKey);
+					console.log(temp);
+					$scope.$watch("currentPage + itemsPerPate", function() {
+						var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+						var end = begin + $scope.itemsPerPage;
+						$scope.studentCollection = temp.slice(begin, end);
+					});
+				};
+				
+				$scope.$watch("currentPage + itemsPerPate", function() {
+					var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+					var end = begin + $scope.itemsPerPage;
+					$scope.studentCollection = $scope.students.slice(begin, end);
+				});
+			});
+		});
 	</script>
 </body>
 </html>
