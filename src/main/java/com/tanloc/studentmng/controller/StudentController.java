@@ -26,10 +26,9 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private StudentInfoService studentInfoService;
-	
 
 	@RequestMapping(value = "/getList")
 	public @ResponseBody List<Student> getListStudent() {
@@ -50,6 +49,17 @@ public class StudentController {
 		student.setStudentInfo(mInfo);
 		try {
 			studentService.saveOrUpdateStudent(student);
+			return new Status(false, null);
+		} catch (Exception e) {
+			return new Status(true, e.toString());
+		}
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public @ResponseBody Status deleteStudent(@PathVariable("id") int id) {
+		try {
+			logger.info("ID: "+id);
+			studentService.deleteStudent(id);
 			return new Status(false, null);
 		} catch (Exception e) {
 			return new Status(true, e.toString());

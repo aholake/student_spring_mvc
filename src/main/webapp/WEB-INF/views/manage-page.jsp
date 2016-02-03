@@ -75,8 +75,9 @@
 						<td>{{student.studentInfo.averageScore}}</td>
 						<td>{{student.studentInfo.dateOfBirth}}</td>
 						<td>{{student.studentInfo.address}}</td>
-						<td><a href="#"><i class="fa fa-trash margin-right-10"></i></a><a
-							href="#" data-toggle="modal" data-target="#modalEdit"
+						<td><a href="#" ng-click="del(student.id)"><i
+								class="fa fa-trash margin-right-10"></i></a><a href="#"
+							data-toggle="modal" data-target="#modalEdit"
 							ng-click="edit(student.id)"><i class="fa fa-pencil"></i></a></td>
 					</tr>
 				</tbody>
@@ -97,38 +98,45 @@
 	<div class="modal fade" id="modalEdit" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Chỉnh sửa thông tin</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label>Mã sinh viên:</label> <input type="text"
-							class="form-control" value="{{editStudent.studentCode}}" ng-model="editStudent.studentCode">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Chỉnh sửa thông tin</h4>
 					</div>
-					<div class="form-group">
-						<label>Tên sinh viên:</label> <input type="text"
-							class="form-control" value="{{editStudent.studentName}}" ng-model="editStudent.studentName">
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Mã sinh viên:</label> <input type="text"
+								class="form-control" value="{{editStudent.studentCode}}"
+								ng-model="editStudent.studentCode" required>
+						</div>
+						<div class="form-group">
+							<label>Tên sinh viên:</label> <input type="text"
+								class="form-control" value="{{editStudent.studentName}}"
+								ng-model="editStudent.studentName" required>
+						</div>
+						<div class="form-group">
+							<label>Điểm trung bình:</label> <input type="text"
+								class="form-control"
+								value="{{editStudent.studentInfo.averageScore}}"
+								ng-model="editStudent.studentInfo.averageScore" required>
+						</div>
+						<div class="form-group">
+							<label>Ngày sinh:</label> <input type="text" class="form-control"
+								value="{{editStudent.studentInfo.dateOfBirth}}"
+								ng-model="editStudent.studentInfo.dateOfBirth" required>
+						</div>
+						<div class="form-group">
+							<label>Địa chỉ:</label> <input type="text" class="form-control"
+								value="{{editStudent.studentInfo.address}}"
+								ng-model="editStudent.studentInfo.address" required>
+						</div>
 					</div>
-					<div class="form-group">
-						<label>Điểm trung bình:</label> <input type="text"
-							class="form-control"
-							value="{{editStudent.studentInfo.averageScore}}" ng-model="editStudent.studentInfo.averageScore">
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="update()">Cập
+							nhật</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
-					<div class="form-group">
-						<label>Ngày sinh:</label> <input type="text" class="form-control"
-							value="{{editStudent.studentInfo.dateOfBirth}}" ng-model="editStudent.studentInfo.dateOfBirth">
-					</div>
-					<div class="form-group">
-						<label>Địa chỉ:</label> <input type="text" class="form-control"
-							value="{{editStudent.studentInfo.address}}" ng-model="editStudent.studentInfo.address">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-primary" ng-click="update()">Cập
-						nhật</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -161,7 +169,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary">Lưu</button>
+					<button type="submit" class="btn btn-primary">Lưu</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -175,51 +183,52 @@
 				.controller(
 						"myCtrl",
 						function($http, $scope, $filter) {
-							$http
-									.get(studentsURL)
-									.success(
-											function(response) {
-												console.log(response);
-												$scope.students = response;
+							loadTable($scope, $http);
+							function loadTable() {
+								$http
+										.get(studentsURL)
+										.success(
+												function(response) {
+													console.log(response);
+													$scope.students = response;
 
-												$scope.totalItems = response.length;
-												$scope.maxSize = 5;
-												$scope.currentPage = 1;
-												$scope.itemsPerPage = 5;
+													$scope.totalItems = response.length;
+													$scope.maxSize = 5;
+													$scope.currentPage = 1;
+													$scope.itemsPerPage = 5;
 
-												$scope
-														.$watch(
-																"currentPage + itemsPerPage",
-																function() {
-																	var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-																	var end = begin
-																			+ $scope.itemsPerPage;
-																	$scope.studentCollection = $scope.students
-																			.slice(
-																					begin,
-																					end);
-																});
-
-												$scope.filterStudent = function() {
-													var temp = [];
-													temp = $filter('filter')(
-															$scope.students,
-															$scope.searchKey);
-													$scope.totalItems = temp.length;
 													$scope
 															.$watch(
-																	"currentPage + itemsPerPate",
+																	"currentPage + itemsPerPage",
 																	function() {
 																		var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
 																		var end = begin
 																				+ $scope.itemsPerPage;
-																		$scope.studentCollection = temp
+																		$scope.studentCollection = $scope.students
 																				.slice(
 																						begin,
 																						end);
 																	});
-												};
-											});
+
+												});
+							}
+
+							$scope.filterStudent = function() {
+								var temp = [];
+								temp = $filter('filter')($scope.students,
+										$scope.searchKey);
+								$scope.totalItems = temp.length;
+								$scope
+										.$watch(
+												"currentPage + itemsPerPate",
+												function() {
+													var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+													var end = begin
+															+ $scope.itemsPerPage;
+													$scope.studentCollection = temp
+															.slice(begin, end);
+												});
+							};
 							$scope.edit = function(studentId) {
 								$scope.editStudent = $filter("filter")(
 										$scope.students, {
@@ -254,11 +263,22 @@
 												function(data, status, headers,
 														config) {
 													console.log(data);
+													$("#modalEdit").modal("hide");
 												}).error(
 												function(data, status, header,
 														config) {
 													console.log(data);
 												});
+							}
+							$scope.del = function(studentId) {
+								var url = "/studentmng/student/delete/"
+										+ studentId;
+								$http.get(url).success(function(response) {
+									console.log(response);
+									loadTable($scope, $http);
+								}).error(function(response) {
+									console.log(response);
+								});
 							}
 						});
 
