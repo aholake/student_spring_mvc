@@ -5,7 +5,7 @@ import java.util.List;
 import com.tanloc.studentmng.model.Student;
 
 public interface StudentDAO {
-	public void addStudent(Student student);
+	public void saveOrUpdateStudent(Student student);
 
 	public Student getStudentById(int id);
 

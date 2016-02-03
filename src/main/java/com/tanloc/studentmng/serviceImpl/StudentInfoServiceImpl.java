@@ -17,8 +17,8 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	private StudentInfoDAO studentInfoDAO;
 
 	@Override
-	public void addStudentInfo(StudentInfo studentInfo) {
-		studentInfoDAO.addStudentInfo(studentInfo);
+	public void saveOrUpdateStudentInfo(StudentInfo studentInfo) {
+		studentInfoDAO.saveOrUpdateStudentInfo(studentInfo);
 	}
 
 	@Override

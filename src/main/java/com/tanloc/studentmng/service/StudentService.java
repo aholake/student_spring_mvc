@@ -5,7 +5,7 @@ import java.util.List;
 import com.tanloc.studentmng.model.Student;
 
 public interface StudentService {
-	public void addStudent(Student student);
+	public void saveOrUpdateStudent(Student student);
 
 	public Student getStudentById(int id);
 

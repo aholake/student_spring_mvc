@@ -18,7 +18,7 @@ public class StudentDAOImpl implements StudentDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public void addStudent(Student student) {
+	public void saveOrUpdateStudent(Student student) {
 		this.getCurrentSession().saveOrUpdate(student);
 	}
 
@@ -46,4 +46,5 @@ public class StudentDAOImpl implements StudentDAO {
 	public Session getCurrentSession() {
 		return this.sessionFactory.getCurrentSession();
 	}
+
 }

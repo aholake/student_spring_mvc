@@ -76,8 +76,8 @@
 						<td>{{student.studentInfo.dateOfBirth}}</td>
 						<td>{{student.studentInfo.address}}</td>
 						<td><a href="#"><i class="fa fa-trash margin-right-10"></i></a><a
-							href="#" data-toggle="modal" data-target="#modalEdit" ng-click="edit(student.id)"><i
-								class="fa fa-pencil"></i></a></td>
+							href="#" data-toggle="modal" data-target="#modalEdit"
+							ng-click="edit(student.id)"><i class="fa fa-pencil"></i></a></td>
 					</tr>
 				</tbody>
 				<tfoot>
@@ -104,25 +104,29 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label>Mã sinh viên:</label> <input type="text"
-							class="form-control" value="{{editStudent.studentCode}}">
+							class="form-control" value="{{editStudent.studentCode}}" ng-model="editStudent.studentCode">
 					</div>
 					<div class="form-group">
 						<label>Tên sinh viên:</label> <input type="text"
-							class="form-control" value="{{editStudent.studentName}}">
+							class="form-control" value="{{editStudent.studentName}}" ng-model="editStudent.studentName">
 					</div>
 					<div class="form-group">
 						<label>Điểm trung bình:</label> <input type="text"
-							class="form-control" value="{{editStudent.studentInfo.averageScore}}">
+							class="form-control"
+							value="{{editStudent.studentInfo.averageScore}}" ng-model="editStudent.studentInfo.averageScore">
 					</div>
 					<div class="form-group">
-						<label>Ngày sinh:</label> <input type="text" class="form-control" value="{{editStudent.studentInfo.dateOfBirth}}">
+						<label>Ngày sinh:</label> <input type="text" class="form-control"
+							value="{{editStudent.studentInfo.dateOfBirth}}" ng-model="editStudent.studentInfo.dateOfBirth">
 					</div>
 					<div class="form-group">
-						<label>Địa chỉ:</label> <input type="text" class="form-control" value="{{editStudent.studentInfo.address}}">
+						<label>Địa chỉ:</label> <input type="text" class="form-control"
+							value="{{editStudent.studentInfo.address}}" ng-model="editStudent.studentInfo.address">
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary">Cập nhật</button>
+					<button class="btn btn-primary" ng-click="update()">Cập
+						nhật</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -165,7 +169,7 @@
 	</div>
 	<script type="text/javascript">
 		var app = angular.module("myApp", [ "ui.bootstrap" ]);
-		var studentsURL = "/studentmng/student/getStudentList"
+		var studentsURL = "/studentmng/student/getList"
 
 		app
 				.controller(
@@ -182,6 +186,19 @@
 												$scope.maxSize = 5;
 												$scope.currentPage = 1;
 												$scope.itemsPerPage = 5;
+
+												$scope
+														.$watch(
+																"currentPage + itemsPerPage",
+																function() {
+																	var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+																	var end = begin
+																			+ $scope.itemsPerPage;
+																	$scope.studentCollection = $scope.students
+																			.slice(
+																					begin,
+																					end);
+																});
 
 												$scope.filterStudent = function() {
 													var temp = [];
@@ -202,23 +219,46 @@
 																						end);
 																	});
 												};
-
-												$scope
-														.$watch(
-																"currentPage + itemsPerPage",
-																function() {
-																	var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-																	var end = begin
-																			+ $scope.itemsPerPage;
-																	$scope.studentCollection = $scope.students
-																			.slice(
-																					begin,
-																					end);
-																});
 											});
-							$scope.edit = function (studentId) {
-								$scope.editStudent = $filter("filter")($scope.students, {id: studentId})[0];
+							$scope.edit = function(studentId) {
+								$scope.editStudent = $filter("filter")(
+										$scope.students, {
+											id : studentId
+										})[0];
 								console.log($scope.editStudent);
+							}
+							$scope.update = function() {
+								var data = {
+									"id" : $scope.editStudent.id,
+									"studentName" : $scope.editStudent.studentName,
+									"studentCode" : $scope.editStudent.studentCode,
+									"studentInfo" : {
+										"id" : $scope.editStudent.studentInfo.id,
+										"address" : $scope.editStudent.studentInfo.address,
+										"averageScore" : $scope.editStudent.studentInfo.averageScore,
+										"dateOfBirth" : $scope.editStudent.studentInfo.dateOfBirth
+									}
+								}
+								data = JSON.stringify(data);
+								console.log(data);
+
+								var config = {
+									header : {
+										"Content-Type" : "application/json; charset=utf-8;"
+									}
+								}
+
+								$http.post("/studentmng/student/saveOrUpdate",
+										data, config)
+										.success(
+												function(data, status, headers,
+														config) {
+													console.log(data);
+												}).error(
+												function(data, status, header,
+														config) {
+													console.log(data);
+												});
 							}
 						});
 

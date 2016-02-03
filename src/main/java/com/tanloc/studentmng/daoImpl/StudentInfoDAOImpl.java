@@ -18,7 +18,7 @@ public class StudentInfoDAOImpl implements StudentInfoDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public void addStudentInfo(StudentInfo studentInfo) {
+	public void saveOrUpdateStudentInfo(StudentInfo studentInfo) {
 		// TODO Auto-generated method stub
 		this.getCurrentSession().saveOrUpdate(studentInfo);
 	}
