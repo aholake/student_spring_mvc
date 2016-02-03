@@ -70,11 +70,16 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="student in studentCollection">
-						<td>{{student.studentCode}}</td>
-						<td>{{student.studentName}}</td>
-						<td>{{student.studentInfo.averageScore}}</td>
-						<td>{{student.studentInfo.dateOfBirth}}</td>
-						<td>{{student.studentInfo.address}}</td>
+						<td>{{student.studentCode == null ? "Chưa cập nhật" :
+							student.studentCode}}</td>
+						<td>{{student.studentName == null ? "Chưa cập nhật" :
+							student.studentName}}</td>
+						<td>{{student.studentInfo.averageScore == null ? "Chưa cập
+							nhật" : student.studentInfo.averageScore}}</td>
+						<td>{{student.studentInfo.dateOfBirth == null ? "Chưa cập
+							nhật" : student.studentInfo.dateOfBirth}}</td>
+						<td>{{student.studentInfo.address == null ? "Chưa cập nhật" :
+							student.studentInfo.address}}</td>
 						<td><a href="#" ng-click="del(student.id)"><i
 								class="fa fa-trash margin-right-10"></i></a><a href="#"
 							data-toggle="modal" data-target="#modalEdit"
@@ -144,34 +149,39 @@
 	<div class="modal fade" id="modalAdd" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Thêm sinh viên</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label>Mã sinh viên:</label> <input type="text"
-							class="form-control">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Thêm sinh viên</h4>
 					</div>
-					<div class="form-group">
-						<label>Tên sinh viên:</label> <input type="text"
-							class="form-control">
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Mã sinh viên:</label> <input type="text"
+								class="form-control" ng-model="newStudent.studentCode">
+						</div>
+						<div class="form-group">
+							<label>Tên sinh viên:</label> <input type="text"
+								class="form-control" ng-model="newStudent.studentName">
+						</div>
+						<div class="form-group">
+							<label>Điểm trung bình:</label> <input type="text"
+								class="form-control"
+								ng-model="newStudent.studentInfo.averageScore">
+						</div>
+						<div class="form-group">
+							<label>Ngày sinh:</label> <input type="text" class="form-control"
+								ng-model="newStudent.studentInfo.dateOfBirth">
+						</div>
+						<div class="form-group">
+							<label>Địa chỉ:</label> <input type="text" class="form-control"
+								ng-model="newStudent.studentInfo.address">
+						</div>
 					</div>
-					<div class="form-group">
-						<label>Điểm trung bình:</label> <input type="text"
-							class="form-control">
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" ng-click="add()">Lưu</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
-					<div class="form-group">
-						<label>Ngày sinh:</label> <input type="text" class="form-control">
-					</div>
-					<div class="form-group">
-						<label>Địa chỉ:</label> <input type="text" class="form-control">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Lưu</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -263,7 +273,8 @@
 												function(data, status, headers,
 														config) {
 													console.log(data);
-													$("#modalEdit").modal("hide");
+													$("#modalEdit").modal(
+															"hide");
 												}).error(
 												function(data, status, header,
 														config) {
@@ -277,6 +288,47 @@
 									console.log(response);
 									loadTable($scope, $http);
 								}).error(function(response) {
+									console.log(response);
+								});
+							}
+
+							$scope.newStudent = {
+								"id" : "",
+								"studentName" : "",
+								"studentCode" : "",
+								"studentInfo" : {
+									"id" : "",
+									"address" : "",
+									"averageScore" : "",
+									"dateOfBirth" : ""
+								}
+							};
+
+							$scope.add = function() {
+								var url = "/studentmng/student/saveOrUpdate";
+								var data = {
+									"studentName" : $scope.newStudent.studentName,
+									"studentCode" : $scope.newStudent.studentCode,
+									"studentInfo" : {
+										"address" : $scope.newStudent.studentInfo.address,
+										"averageScore" : $scope.newStudent.studentInfo.averageScore,
+										"dateOfBirth" : $scope.newStudent.studentInfo.dateOfBirth
+									}
+								};
+								data = JSON.stringify(data);
+
+								var config = {
+									header : {
+										"Content-Type" : "application/json; charset=utf-8;"
+									}
+								}
+
+								$http.post(url, data, config).success(
+										function(response) {
+											console.log(response);
+											loadTable($scope, $http);
+											$("#modalAdd").modal("hide");
+										}).error(function(response) {
 									console.log(response);
 								});
 							}
