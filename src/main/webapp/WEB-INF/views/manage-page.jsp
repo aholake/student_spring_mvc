@@ -36,6 +36,12 @@
 <script type="text/javascript"
 	src="/studentmng/resources/js/kc.fab.min.js"></script>
 
+<!-- Bootstrap Datepicker -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css">
+
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
 <!-- Custom Style -->
 <link rel="stylesheet" href="/studentmng/resources/css/style.css">
 
@@ -126,9 +132,20 @@
 								ng-model="editStudent.studentInfo.averageScore" required>
 						</div>
 						<div class="form-group">
-							<label>Ngày sinh:</label> <input type="text" class="form-control"
+							<label>Ngày sinh:</label>
+							<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+								<input type="text" class="form-control"
+									value="{{editStudent.studentInfo.dateOfBirth}}"
+									ng-model="editStudent.studentInfo.dateOfBirth" required>
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+							<!-- 
+							<input type="text" class="form-control"
 								value="{{editStudent.studentInfo.dateOfBirth}}"
 								ng-model="editStudent.studentInfo.dateOfBirth" required>
+								 -->
 						</div>
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
@@ -137,9 +154,9 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-primary" ng-click="update()">Cập
+						<button class="btn btn-primary" ng-submit="update()">Cập
 							nhật</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</form>
 			</div>
@@ -157,190 +174,40 @@
 					<div class="modal-body">
 						<div class="form-group">
 							<label>Mã sinh viên:</label> <input type="text"
-								class="form-control" ng-model="newStudent.studentCode">
+								class="form-control" ng-model="newStudent.studentCode" required>
 						</div>
 						<div class="form-group">
 							<label>Tên sinh viên:</label> <input type="text"
-								class="form-control" ng-model="newStudent.studentName">
+								class="form-control" ng-model="newStudent.studentName" required>
 						</div>
 						<div class="form-group">
 							<label>Điểm trung bình:</label> <input type="text"
 								class="form-control"
-								ng-model="newStudent.studentInfo.averageScore">
+								ng-model="newStudent.studentInfo.averageScore" required>
 						</div>
 						<div class="form-group">
-							<label>Ngày sinh:</label> <input type="text" class="form-control"
-								ng-model="newStudent.studentInfo.dateOfBirth">
+							<label>Ngày sinh:</label>
+							<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+								<input type="text" class="form-control"
+									ng-model="newStudent.studentInfo.dateOfBirth" required>
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
 						</div>
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
-								ng-model="newStudent.studentInfo.address">
+								ng-model="newStudent.studentInfo.address" required>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary" ng-click="add()">Lưu</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" ng-submit="add()">Lưu</button>
+						<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		var app = angular.module("myApp", [ "ui.bootstrap" ]);
-		var studentsURL = "/studentmng/student/getList"
-
-		app
-				.controller(
-						"myCtrl",
-						function($http, $scope, $filter) {
-							loadTable($scope, $http);
-							function loadTable() {
-								$http
-										.get(studentsURL)
-										.success(
-												function(response) {
-													console.log(response);
-													$scope.students = response;
-
-													$scope.totalItems = response.length;
-													$scope.maxSize = 5;
-													$scope.currentPage = 1;
-													$scope.itemsPerPage = 5;
-
-													$scope
-															.$watch(
-																	"currentPage + itemsPerPage",
-																	function() {
-																		var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-																		var end = begin
-																				+ $scope.itemsPerPage;
-																		$scope.studentCollection = $scope.students
-																				.slice(
-																						begin,
-																						end);
-																	});
-
-												});
-							}
-
-							$scope.filterStudent = function() {
-								var temp = [];
-								temp = $filter('filter')($scope.students,
-										$scope.searchKey);
-								$scope.totalItems = temp.length;
-								$scope
-										.$watch(
-												"currentPage + itemsPerPate",
-												function() {
-													var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-													var end = begin
-															+ $scope.itemsPerPage;
-													$scope.studentCollection = temp
-															.slice(begin, end);
-												});
-							};
-							$scope.edit = function(studentId) {
-								$scope.editStudent = $filter("filter")(
-										$scope.students, {
-											id : studentId
-										})[0];
-								console.log($scope.editStudent);
-							}
-							$scope.update = function() {
-								var data = {
-									"id" : $scope.editStudent.id,
-									"studentName" : $scope.editStudent.studentName,
-									"studentCode" : $scope.editStudent.studentCode,
-									"studentInfo" : {
-										"id" : $scope.editStudent.studentInfo.id,
-										"address" : $scope.editStudent.studentInfo.address,
-										"averageScore" : $scope.editStudent.studentInfo.averageScore,
-										"dateOfBirth" : $scope.editStudent.studentInfo.dateOfBirth
-									}
-								}
-								data = JSON.stringify(data);
-								console.log(data);
-
-								var config = {
-									header : {
-										"Content-Type" : "application/json; charset=utf-8;"
-									}
-								}
-
-								$http.post("/studentmng/student/saveOrUpdate",
-										data, config)
-										.success(
-												function(data, status, headers,
-														config) {
-													console.log(data);
-													$("#modalEdit").modal(
-															"hide");
-												}).error(
-												function(data, status, header,
-														config) {
-													console.log(data);
-												});
-							}
-							$scope.del = function(studentId) {
-								var url = "/studentmng/student/delete/"
-										+ studentId;
-								$http.get(url).success(function(response) {
-									console.log(response);
-									loadTable($scope, $http);
-								}).error(function(response) {
-									console.log(response);
-								});
-							}
-
-							$scope.newStudent = {
-								"id" : "",
-								"studentName" : "",
-								"studentCode" : "",
-								"studentInfo" : {
-									"id" : "",
-									"address" : "",
-									"averageScore" : "",
-									"dateOfBirth" : ""
-								}
-							};
-
-							$scope.add = function() {
-								var url = "/studentmng/student/saveOrUpdate";
-								var data = {
-									"studentName" : $scope.newStudent.studentName,
-									"studentCode" : $scope.newStudent.studentCode,
-									"studentInfo" : {
-										"address" : $scope.newStudent.studentInfo.address,
-										"averageScore" : $scope.newStudent.studentInfo.averageScore,
-										"dateOfBirth" : $scope.newStudent.studentInfo.dateOfBirth
-									}
-								};
-								data = JSON.stringify(data);
-
-								var config = {
-									header : {
-										"Content-Type" : "application/json; charset=utf-8;"
-									}
-								}
-
-								$http.post(url, data, config).success(
-										function(response) {
-											console.log(response);
-											loadTable($scope, $http);
-											$("#modalAdd").modal("hide");
-										}).error(function(response) {
-									console.log(response);
-								});
-							}
-						});
-
-		$(function() {
-			var links = [ {
-				"bgcolor" : "red",
-				"icon" : "+"
-			} ]
-			$('.kc_fab_wrapper').kc_fab(links);
-		});
-	</script>
+	<script type="text/javascript" src="/studentmng/resources/js/main.js"></script>
 </body>
 </html>
