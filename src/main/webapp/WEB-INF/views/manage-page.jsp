@@ -42,6 +42,7 @@
 
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+
 <!-- Custom Style -->
 <link rel="stylesheet" href="/studentmng/resources/css/style.css">
 
@@ -109,27 +110,27 @@
 	<div class="modal fade" id="modalEdit" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form id="modifyForm" ng-submit="update()">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Chỉnh sửa thông tin</h4>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Mã sinh viên:</label> <input type="text"
+							<label>Mã sinh viên:</label> <input type="text" minlength="8" maxlength="8" pattern="^[0-9]{8}$"
 								class="form-control" value="{{editStudent.studentCode}}"
 								ng-model="editStudent.studentCode" required>
 						</div>
 						<div class="form-group">
-							<label>Tên sinh viên:</label> <input type="text"
+							<label>Tên sinh viên:</label> <input type="text" minlength="5" maxlength="20" required
 								class="form-control" value="{{editStudent.studentName}}"
-								ng-model="editStudent.studentName" required>
+								ng-model="editStudent.studentName">
 						</div>
 						<div class="form-group">
-							<label>Điểm trung bình:</label> <input type="text"
+							<label>Điểm trung bình:</label> <input type="number" step="0.1"
 								class="form-control"
 								value="{{editStudent.studentInfo.averageScore}}"
-								ng-model="editStudent.studentInfo.averageScore" required>
+								ng-model="editStudent.studentInfo.averageScore" min="0" max="10" required>
 						</div>
 						<div class="form-group">
 							<label>Ngày sinh:</label>
@@ -141,22 +142,17 @@
 									<span class="glyphicon glyphicon-th"></span>
 								</div>
 							</div>
-							<!-- 
-							<input type="text" class="form-control"
-								value="{{editStudent.studentInfo.dateOfBirth}}"
-								ng-model="editStudent.studentInfo.dateOfBirth" required>
-								 -->
 						</div>
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
 								value="{{editStudent.studentInfo.address}}"
-								ng-model="editStudent.studentInfo.address" required>
+								ng-model="editStudent.studentInfo.address" minlength="8" maxlength="20" required>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-primary" ng-submit="update()">Cập
+						<button type="submit" class="btn btn-primary">Cập
 							nhật</button>
-						<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</form>
 			</div>
@@ -166,24 +162,24 @@
 	<div class="modal fade" id="modalAdd" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form id="addingForm" ng-submit="add()">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Thêm sinh viên</h4>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Mã sinh viên:</label> <input type="text"
+							<label>Mã sinh viên:</label> <input type="text" minlength="8" maxlength="8" pattern="^[0-9]{8}$"
 								class="form-control" ng-model="newStudent.studentCode" required>
 						</div>
 						<div class="form-group">
 							<label>Tên sinh viên:</label> <input type="text"
-								class="form-control" ng-model="newStudent.studentName" required>
+								class="form-control" ng-model="newStudent.studentName" minlength="5" maxlength="20" required>
 						</div>
 						<div class="form-group">
-							<label>Điểm trung bình:</label> <input type="text"
+							<label>Điểm trung bình:</label> <input type="number" step="0.1"
 								class="form-control"
-								ng-model="newStudent.studentInfo.averageScore" required>
+								ng-model="newStudent.studentInfo.averageScore" min="0" max="10" required>
 						</div>
 						<div class="form-group">
 							<label>Ngày sinh:</label>
@@ -197,12 +193,12 @@
 						</div>
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
-								ng-model="newStudent.studentInfo.address" required>
+								ng-model="newStudent.studentInfo.address" minlength="8" maxlength="20" required>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary" ng-submit="add()">Lưu</button>
-						<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Lưu</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</form>
 			</div>

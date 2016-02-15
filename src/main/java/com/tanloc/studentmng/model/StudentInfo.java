@@ -85,7 +85,7 @@ public class StudentInfo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "StudentInfo [id=" + id + ", student=" + student + ", address=" + address + ", averageScore="
+		return "StudentInfo [id=" + id + ", address=" + address + ", averageScore="
 				+ averageScore + ", dateOfBirth=" + dateOfBirth + "]";
 	}
 }

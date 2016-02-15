@@ -127,8 +127,9 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 
 $(function() {
 	var links = [ {
-		"bgcolor" : "red",
+		"bgcolor" : "green",
 		"icon" : "+"
 	} ]
 	$('.kc_fab_wrapper').kc_fab(links);
 });
+

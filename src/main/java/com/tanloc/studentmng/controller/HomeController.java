@@ -1,5 +1,7 @@
 package com.tanloc.studentmng.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,13 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
-	public ModelAndView manage() {
+	public ModelAndView manage(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("manage-page");
+		if(request.getSession().getAttribute("user") == null) {
+			model.setViewName("redirect:/");
+		} else {
+			model.setViewName("manage-page");
+		}
 		return model;
 	}
 }
