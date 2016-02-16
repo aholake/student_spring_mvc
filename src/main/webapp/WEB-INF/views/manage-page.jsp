@@ -117,24 +117,29 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Mã sinh viên:</label> <input type="text" minlength="8" maxlength="8" pattern="^[0-9]{8}$"
-								class="form-control" value="{{editStudent.studentCode}}"
+							<label>Mã sinh viên:</label> <input type="text" minlength="8"
+								maxlength="8" pattern="^[0-9]{8}$" class="form-control"
+								value="{{editStudent.studentCode}}"
 								ng-model="editStudent.studentCode" required>
 						</div>
 						<div class="form-group">
-							<label>Tên sinh viên:</label> <input type="text" minlength="5" maxlength="20" required
-								class="form-control" value="{{editStudent.studentName}}"
+							<label>Tên sinh viên:</label> <input type="text"
+								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/>.<,])+"
+								minlength="5" maxlength="50" required class="form-control"
+								value="{{editStudent.studentName}}"
 								ng-model="editStudent.studentName">
 						</div>
 						<div class="form-group">
 							<label>Điểm trung bình:</label> <input type="number" step="0.1"
 								class="form-control"
 								value="{{editStudent.studentInfo.averageScore}}"
-								ng-model="editStudent.studentInfo.averageScore" min="0" max="10" required>
+								ng-model="editStudent.studentInfo.averageScore" min="0" max="10"
+								required>
 						</div>
 						<div class="form-group">
 							<label>Ngày sinh:</label>
-							<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+							<div class="input-group date" data-provide="datepicker"
+								data-date-format="yyyy-mm-dd">
 								<input type="text" class="form-control"
 									value="{{editStudent.studentInfo.dateOfBirth}}"
 									ng-model="editStudent.studentInfo.dateOfBirth" required>
@@ -144,14 +149,15 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label>Địa chỉ:</label> <input type="text" class="form-control"
-								value="{{editStudent.studentInfo.address}}"
-								ng-model="editStudent.studentInfo.address" minlength="8" maxlength="20" required>
+							<label>Địa chỉ:</label> <input type="text"
+								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/>.<,])+"
+								class="form-control" value="{{editStudent.studentInfo.address}}"
+								ng-model="editStudent.studentInfo.address" minlength="5"
+								maxlength="20" required>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Cập
-							nhật</button>
+						<button type="submit" class="btn btn-primary">Cập nhật</button>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</form>
@@ -169,22 +175,28 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Mã sinh viên:</label> <input type="text" minlength="8" maxlength="8" pattern="^[0-9]{8}$"
+							<label>Mã sinh viên:</label> <input type="text" minlength="8"
+								placeholder="12345678" maxlength="8" pattern="^[0-9]{8}$"
 								class="form-control" ng-model="newStudent.studentCode" required>
 						</div>
 						<div class="form-group">
 							<label>Tên sinh viên:</label> <input type="text"
-								class="form-control" ng-model="newStudent.studentName" minlength="5" maxlength="20" required>
+								placeholder="Nguyễn Văn A"
+								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/>.<,])+"
+								class="form-control" ng-model="newStudent.studentName"
+								minlength="5" maxlength="50" required>
 						</div>
 						<div class="form-group">
 							<label>Điểm trung bình:</label> <input type="number" step="0.1"
-								class="form-control"
-								ng-model="newStudent.studentInfo.averageScore" min="0" max="10" required>
+								placeholder="5.5" class="form-control"
+								ng-model="newStudent.studentInfo.averageScore" min="0" max="10"
+								required>
 						</div>
 						<div class="form-group">
 							<label>Ngày sinh:</label>
-							<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-								<input type="text" class="form-control"
+							<div class="input-group date" data-provide="datepicker"
+								data-date-format="yyyy-mm-dd">
+								<input type="text" class="form-control" placeholder="1994-04-04"
 									ng-model="newStudent.studentInfo.dateOfBirth" required>
 								<div class="input-group-addon">
 									<span class="glyphicon glyphicon-th"></span>
@@ -193,7 +205,10 @@
 						</div>
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
-								ng-model="newStudent.studentInfo.address" minlength="8" maxlength="20" required>
+								placeholder="TP. Hồ Chí Minh"
+								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/>.<,])+"
+								ng-model="newStudent.studentInfo.address" minlength="5"
+								maxlength="20" required>
 						</div>
 					</div>
 					<div class="modal-footer">
