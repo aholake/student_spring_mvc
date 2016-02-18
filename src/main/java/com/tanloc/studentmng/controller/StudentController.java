@@ -55,7 +55,7 @@ public class StudentController {
 		}
 	}
 
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody Status deleteStudent(@PathVariable("id") int id) {
 		try {
 			logger.info("ID: "+id);

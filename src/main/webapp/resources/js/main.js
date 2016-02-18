@@ -80,7 +80,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 	}
 	
 	$scope.del = function(studentId) {
-		$http.get(deleteURL + studentId).success(function(response) {
+		$http({method: "DELETE", url: deleteURL+studentId}).success(function(response) {
 			console.log(response);
 			loadTable($scope, $http);
 		}).error(function(response) {
@@ -122,7 +122,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 			console.log(response);
 			loadTable($scope, $http);
 			$("#modalAdd").modal("hide");
-			$("#modalAdd")[0].reset();
+			$("form").trigger("reset");
 		}).error(function(response) {
 			console.log(response);
 		});
