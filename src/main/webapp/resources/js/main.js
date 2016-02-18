@@ -5,10 +5,12 @@ function setCookie(cname, cvalue, exdays) {
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
-var app = angular.module("myApp", [ "ui.bootstrap" ]);
-var studentsURL = "/studentmng/student/getList"
+var app = angular.module("myApp", [ "ui.bootstrap" ]).constant("studentsURL",
+		"/studentmng/student/getList").constant("saveOrUpdateURL",
+		"/studentmng/student/saveOrUpdate").constant("deleteURL","/studentmng/student/delete/");
 
-app.controller("myCtrl", function($http, $scope, $filter) {
+app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
+		saveOrUpdateURL,deleteURL) {
 	loadTable($scope, $http);
 	function loadTable() {
 		$http.get(studentsURL).success(function(response) {
@@ -39,12 +41,14 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 			$scope.studentCollection = temp.slice(begin, end);
 		});
 	};
+	
 	$scope.edit = function(studentId) {
 		$scope.editStudent = $filter("filter")($scope.students, {
 			id : studentId
 		})[0];
 		console.log($scope.editStudent);
 	}
+	
 	$scope.update = function() {
 		var data = {
 			"id" : $scope.editStudent.id,
@@ -66,7 +70,7 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 			}
 		}
 
-		$http.post("/studentmng/student/saveOrUpdate", data, config).success(
+		$http.post(saveOrUpdateURL, data, config).success(
 				function(data, status, headers, config) {
 					console.log(data);
 					$("#modalEdit").modal("hide");
@@ -74,9 +78,9 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 			console.log(data);
 		});
 	}
+	
 	$scope.del = function(studentId) {
-		var url = "/studentmng/student/delete/" + studentId;
-		$http.get(url).success(function(response) {
+		$http.get(deleteURL + studentId).success(function(response) {
 			console.log(response);
 			loadTable($scope, $http);
 		}).error(function(response) {
@@ -97,7 +101,6 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 	};
 
 	$scope.add = function() {
-		var url = "/studentmng/student/saveOrUpdate";
 		var data = {
 			"studentName" : $scope.newStudent.studentName,
 			"studentCode" : $scope.newStudent.studentCode,
@@ -115,10 +118,11 @@ app.controller("myCtrl", function($http, $scope, $filter) {
 			}
 		}
 
-		$http.post(url, data, config).success(function(response) {
+		$http.post(saveOrUpdateURL, data, config).success(function(response) {
 			console.log(response);
 			loadTable($scope, $http);
 			$("#modalAdd").modal("hide");
+			$("#modalAdd")[0].reset();
 		}).error(function(response) {
 			console.log(response);
 		});
@@ -132,4 +136,3 @@ $(function() {
 	} ]
 	$('.kc_fab_wrapper').kc_fab(links);
 });
-

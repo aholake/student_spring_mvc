@@ -206,7 +206,7 @@
 						<div class="form-group">
 							<label>Địa chỉ:</label> <input type="text" class="form-control"
 								placeholder="TP. Hồ Chí Minh"
-								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/>.<,])+"
+								pattern="([^0-9`!@#$%^&*()=+|{}[\]\'\x22:;?/><,])+"
 								ng-model="newStudent.studentInfo.address" minlength="5"
 								maxlength="20" required>
 						</div>
