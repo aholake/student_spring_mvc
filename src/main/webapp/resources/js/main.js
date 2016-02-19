@@ -1,3 +1,4 @@
+//set cookie function
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -5,10 +6,12 @@ function setCookie(cname, cvalue, exdays) {
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
+//initialize angular module
 var app = angular.module("myApp", [ "ui.bootstrap" ]).constant("studentsURL",
 		"/studentmng/student/getList").constant("saveOrUpdateURL",
 		"/studentmng/student/saveOrUpdate").constant("deleteURL","/studentmng/student/delete/");
 
+//Listen event and load data
 app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 		saveOrUpdateURL,deleteURL) {
 	loadTable($scope, $http);
@@ -31,6 +34,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 		});
 	}
 
+	//filter student by search key
 	$scope.filterStudent = function() {
 		var temp = [];
 		temp = $filter('filter')($scope.students, $scope.searchKey);
@@ -49,6 +53,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 		console.log($scope.editStudent);
 	}
 	
+	//update student information
 	$scope.update = function() {
 		var data = {
 			"id" : $scope.editStudent.id,
@@ -79,6 +84,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 		});
 	}
 	
+	//delete a student
 	$scope.del = function(studentId) {
 		$http({method: "DELETE", url: deleteURL+studentId}).success(function(response) {
 			console.log(response);
@@ -99,7 +105,8 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 			"dateOfBirth" : ""
 		}
 	};
-
+	
+	//Add student to database
 	$scope.add = function() {
 		var data = {
 			"studentName" : $scope.newStudent.studentName,
@@ -129,6 +136,7 @@ app.controller("myCtrl", function($http, $scope, $filter, studentsURL,
 	}
 });
 
+//Initialize floating action button
 $(function() {
 	var links = [ {
 		"bgcolor" : "green",

@@ -45,15 +45,10 @@
 								<form:input path="password" type="password"
 									cssClass="form-control" required="required" />
 							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<label><input type="checkbox" value="">Ghi nhớ
-										đăng nhập</label>
-								</div>
-							</div>
+
 							<c:if test="${!empty status && status.error }">
 								<div class="form-group">
-									<div class="text-danger">${status.message }</div>
+									<div class="alert alert-danger">${status.message }</div>
 								</div>
 							</c:if>
 						</div>
